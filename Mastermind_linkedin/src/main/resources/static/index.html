@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px;
+            margin: 10px auto;
+            max-width: 400px;
+            height: 200px;
+            overflow-y: scroll;
+        }
+
+        #guessInput {
+            width: 200px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Mastermind</h1>
+<div id="messages"></div>
+<input type="text" id="guessInput" placeholder="Enter your guess">
+<button onclick="sendGuess()">Submit</button>
+
+<script>
+        const ws = new WebSocket('ws://192.168.192.58:8080/ws/multiplayer?username=guest'); // Switch between /singleplayer and /multiplayer
+
+        ws.onmessage = (event) => {
+            const messages = document.getElementById('messages');
+            messages.innerHTML += `<p>${event.data}</p>`;
+        };
+
+        function sendGuess() {
+            const input = document.getElementById('guessInput');
+            ws.send(input.value);
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
